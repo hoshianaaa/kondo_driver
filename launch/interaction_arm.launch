@@ -1,12 +1,12 @@
 <launch>
   <!-- Load Kondo ICS parameters -->
-  <rosparam file="$(find kondo_driver)/config/driver_sample.yaml" command="load" ns="kondo_driver"/>
+  <rosparam file="$(find kondo_driver)/config/interaction_arm_driver.yaml" command="load" ns="kondo_driver"/>
   <!-- Start ICS driver -->
   <node name="kondo_driver" pkg="kondo_driver" type="kondo_driver" args="fake:=true joint_0_driver joint_1_driver joint_2_driver joint_3_driver" output="screen" />
   <!-- Load URDF model -->
-  <param name="robot_description" command="cat $(find kondo_driver)/urdf/sample.urdf" />
+  <param name="robot_description" command="cat $(find kondo_driver)/urdf/interaction_robot.urdf" />
   <!-- Load joint controller configurations from YAML file to parameter server -->
-  <rosparam file="$(find kondo_driver)/config/controller_sample.yaml" command="load"/>
+  <rosparam file="$(find kondo_driver)/config/interaction_arm_controller.yaml" command="load"/>
   <!-- Load the controllers -->
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="--shutdown-timeout 0.1 joint_state_controller joint_0_controller joint_1_controller joint_2_controller joint_3_controller"/>
   <!-- Robot state publisher -->
