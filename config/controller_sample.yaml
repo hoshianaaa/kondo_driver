@@ -7,3 +7,9 @@ joint_0_controller:
     publish_rate: 50
     base_frame_id: base_link
     joint : joint_0
+    
+joint_1_controller:
+    type: position_controllers/JointPositionController
+    publish_rate: 50
+    base_frame_id: base_link
+    joint : joint_1
