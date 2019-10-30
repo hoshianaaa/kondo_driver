@@ -25,3 +25,15 @@ joint_3_controller:
     publish_rate: 50
     base_frame_id: base_link
     joint : arm_joint_3
+
+joint_4_controller:
+    type: position_controllers/JointPositionController
+    publish_rate: 50
+    base_frame_id: base_link
+    joint : arm_joint_4
+
+joint_5_controller:
+    type: position_controllers/JointPositionController
+    publish_rate: 50
+    base_frame_id: base_link
+    joint : arm_joint_5

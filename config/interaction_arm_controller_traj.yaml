@@ -1,0 +1,37 @@
+joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
+
+manipulator:
+  arm_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+      - arm_joint_0
+      - arm_joint_1
+      - arm_joint_2
+      - arm_joint_3
+      - arm_joint_4
+      - arm_joint_5
+    action_monitor_rate: 10
+    constraints:
+      goal_time: 1.0
+      stopped_velocity_tolerance: 1.0
+      arm_joint_0:
+        trajectory: 1.0
+        goal: 1.0
+      arm_joint_1:
+        trajectory: 1.0
+        goal: 1.0
+      arm_joint_2:
+        trajectory: 1.0
+        goal: 1.0
+      arm_joint_3:
+        trajectory: 1.0
+        goal: 1.0
+      arm_joint_4:
+        trajectory: 1.0
+        goal: 1.0
+      arm_joint_5:
+        trajectory: 1.0
+        goal: 1.0
+
