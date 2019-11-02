@@ -39,6 +39,7 @@ private:
 	int curr_limit; // current limit
 	int temp_limit;
 	int min_angle, max_angle;
+    int reduction_ratio;
 public:
 	double cmd, pos, vel, eff;
 	std::string joint_name;
@@ -50,7 +51,7 @@ public:
 		return true;
 	}
 	
-	KondoMotor (B3MData* b3m, std::string actuator_name, hardware_interface::JointStateInterface& state_interface, hardware_interface::PositionJointInterface& pos_interface, bool loopback=false) : cmd(0), pos(0), vel(0), eff(0) {
+	KondoMotor (B3MData* b3m, std::string actuator_name, hardware_interface::JointStateInterface& state_interface, hardware_interface::PositionJointInterface& pos_interface, bool loopback=false) : cmd(0), pos(0), vel(0), eff(0) , reduction_ratio(1) {
 		motor_power = true;
 		this->loopback = loopback;
 		this->b3m = b3m;
@@ -92,7 +93,13 @@ public:
 			ROS_INFO("temperature_limit: %d", temp_limit);
 			set_temperature_limit(temp_limit * 100);
 		}
-		hardware_interface::JointStateHandle state_handle(joint_name, &pos, &vel, &eff);
+		if (nh.getParam("reduction_ratio", reduction_ratio)) {
+			ROS_INFO("reduction_reatio: %d", reduction_ratio);
+            min_angle = min_angle * reduction_ratio;
+            max_angle = max_angle * reduction_ratio;
+		}
+
+		hardware_interface::JointStateHandle state_handle(joint_name, &pos , &vel, &eff);
 		state_interface.registerHandle(state_handle);
 		hardware_interface::JointHandle pos_handle(state_interface.getHandle(joint_name), &cmd);
 		pos_interface.registerHandle(pos_handle);
@@ -102,7 +109,7 @@ public:
 	void update (void) {
 		static const int DESIRED_VELOCITY = 2000;	// for safty
 		int deg100 = 0;				// degree * 100
-		double radian = cmd;
+		double radian = cmd * reduction_ratio;
 		if (radian < min_angle * 3.14 / 180) {
 			radian = min_angle * 3.14 / 180;
 		}
@@ -113,12 +120,12 @@ public:
 			deg100 = radian_to_deg100(radian);
 		}
 		if (loopback) {
-			pos = radian;
+			pos = radian / reduction_ratio;
 			eff = 0;
 		}else{
 			b3m_set_angle(b3m, id, deg100);
 			b3m_get_angle(b3m, id, &deg100);
-			pos = deg100_to_radian(deg100);
+			pos = deg100_to_radian(deg100) / reduction_ratio;
 
 //			if (!b3m_set_angle_velocity(b3m, id, &deg100, DESIRED_VELOCITY)){
 //				pos = deg100_to_radian(deg100);
