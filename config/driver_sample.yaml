@@ -3,16 +3,17 @@ product_id: 0x0009 # RS485USB
 joint_0_driver:
   joint_name: joint_0
   id: 0
-  min_angle: -180
-  max_angle:  180
+  min_angle: -90
+  max_angle:  90
   stretch: 60
   speed: 127
   current_limit: 4000
   temperature_limit: 80
+  reduction_ratio: 3.8
 
 joint_1_driver:
   joint_name: joint_1
-  id: 2
+  id: 1
   min_angle: -180
   max_angle:  180
   stretch: 60
@@ -22,9 +23,9 @@ joint_1_driver:
 
 joint_2_driver:
   joint_name: joint_2
-  id: 3
-  min_angle: -180
-  max_angle:  180
+  id: 2
+  min_angle: -260
+  max_angle:  0
   stretch: 60
   speed: 127
   current_limit: 3000
@@ -32,7 +33,7 @@ joint_2_driver:
 
 joint_3_driver:
   joint_name: joint_3
-  id: 4
+  id: 3
   min_angle: -180
   max_angle:  180
   stretch: 60
